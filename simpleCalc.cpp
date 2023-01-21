@@ -160,8 +160,16 @@ public :
         for(int i = 0; i < n-1; i++){
             if(matrix[i][i] == 0 ){
             for(int j = i + 1; j < n; j++){
+                bool check = true;
                 if(matrix[j][i] != 0){
                     switchRows(i,j,matrix);
+                    switchRows(i,j,matrixRev);
+                    check = false;
+                    break;
+                }
+                if(check){
+                    cout<<"columns number " <<i + 1<<" has of all its rows filled with 0 "<<endl;
+                    cout<<" extra varaible error occured"<<endl;
                     break;
                 }
             }
@@ -190,5 +198,4 @@ int main(){
     Calix test;
     test.matRev();
 }
-
 

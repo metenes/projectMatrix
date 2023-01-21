@@ -1,4 +1,4 @@
-# projectMatrix
+# Calix - open source Mathlab-like application - 
 This project aims to develop a simple MatLab-like application which is able to do Matrix Calculations and Linear Algebra
 How I get this idea is a bit wierd, 
 I'm into quantum computation and while I was looking the "Introduction to quantum mechanics / David J. Griffiths", I have realized there are a good amount of

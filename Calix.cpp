@@ -80,6 +80,92 @@ using namespace std;
         }
     }
 
+    double** Calix::transposMatrix(double** matrix, int row, int col){
+        double** matrixR = new double*[col];
+        for(int i = 0; i < col; i++){
+            matrixR[i] = new double[row];
+            for(int j = 0; j < row; j++){
+                matrixR[i][j] = matrix[j][i];
+            }
+        }
+        return matrixR;
+    }
+
+    void Calix::determinant(){
+        int n;
+        cout << "- Matrix determinant is valid for matrix(s) have same number of row and column -" << endl;
+        cout << "Enter the number of rows and columns" << endl;
+        cin >> n;
+
+        // Result matrix
+        double** matrix = new double*[n];
+
+        for(int i = 0; i < n; i++ ){
+            cout << "Enter the row#"<< i+1 << endl;
+            matrix[i] = new double[n];
+            for(int j = 0; j < n; j++){
+                double cur;
+                cin >> cur;
+                matrix[i][j] = cur;
+            }
+        }
+
+        double res = determinantCal(matrix,n);
+        cout << " Determinant of the matrix " << endl;
+        displayMatrix(matrix, n);
+        cout << "equals to " << res << endl;
+        delete [] matrix;
+    }
+
+    double Calix::determinantCal(double** matrix, int n){
+        if(n == 1){
+            return matrix[0][0];
+        }
+        else if(n == 2){
+            return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1];
+        }
+        else if (n == 3){
+            return (matrix[0][0] * matrix[1][1] * matrix[2][2])
+                 + (matrix[1][0] * matrix[2][1] * matrix[0][2])
+                 + (matrix[2][0] * matrix[0][1] * matrix[1][2])
+                 - (matrix[2][0] * matrix[1][1] * matrix[0][2])
+                 - (matrix[0][0] * matrix[2][1] * matrix[1][2])
+                 - (matrix[1][0] * matrix[0][1] * matrix[2][2]);
+        }
+        else{
+           double res = 0;
+            for(int i = 0; i < n; i++){
+                res += matrix[0][i] * coFactorCal(matrix, n, 0, i);
+            }
+            return res;
+        }
+    }
+
+    double Calix::coFactorCal(double** matrix, int n, int row, int col){
+        int rowC = 0;
+        double** newMatrix = new double*[n-1];
+        for(int i = 0; i < n; i++){
+            if(i != row){
+                newMatrix[rowC] = new double[n-1];
+                int colC = 0;
+                for(int j = 0; j < n; j++){
+                    if(j != col){
+                        newMatrix[rowC][colC] = matrix[i][j];
+                        colC++;
+                    }
+                }
+                rowC++;
+            }
+        }
+        double sum = pow(-1,row+col) *  determinantCal(newMatrix, n-1);
+        delete [] newMatrix;
+        return sum;
+    }
+
+    double** Calix::adjMatrixCal(double** matrix){
+
+    }
+
     double** Calix::matrixSum(){
         int row, col;
         cout << "- Matrix sum is valid for matrix(s) have same number of row and column -" << endl;
@@ -95,7 +181,6 @@ using namespace std;
                 matrixR[i][j] = 0;
             }
         }
-
 
         // Matrix list
         vector < double** > matrixList;
@@ -129,28 +214,34 @@ using namespace std;
     }
 
 
-    double** Calix::matrixMult(){
+    void Calix::matrixMult(){
         cout << "First Matrix's column number must be same with second Matrix's row number" << endl;
 
         // Result Matrix
         int rowR , colR;
 
+        // Other Matrix
+        int row1 , col1;
+        int row2 , col2;
+
         double** matrix1;
         double** matrix2;
+
         // Matrix list
         vector < double** > matrixList = { matrix1 , matrix2};
-
-        double** matrixR;
 
         // Check for Matrix constrains
         bool check = true;
         int checkS;
+
         for(int k = 0; k < 2; k++){
           cout << "Enter the number of rows and columns for Matrix #" << k+1 << endl;
           int row, col;
           cin >> row >> col;
             if(k == 0){
                 rowR = row;
+                row1 = row;
+                col1 = col;
                 checkS = col;
             }
             else{
@@ -161,13 +252,15 @@ using namespace std;
                 }
                 else{
                     colR = col;
+                    row2 = row;
+                    col2 = col;
                 }
             }
 
             matrixList[k] = new double*[row];
             double** curMatrix = matrixList[k];
+            cout << "Enter the numbers Matrix #" << k+1 << endl;
             for(int i = 0; i < row; i++ ){
-                cout << "Enter the numbers Matrix #" << k+1 << endl;
                 curMatrix[i] = new double[col];
                 for(int j = 0; j < col; j++){
                     double m;
@@ -179,12 +272,32 @@ using namespace std;
 
         if(check){
          // Result matrix
-            //displayMatrix();
-            matrixR = new double*[rowR];
 
+        int rowCount = 0;
+        int colCount = 0;
+            double** matrixR = new double*[rowR];
+            for(int i = 0; i < rowR; i++){
+                matrixR[i] = new double[colR];
+                for(int j = 0; j < colR ;j++){
+                    double sum = 0;
+                    for(int k = 0; k < checkS; k++){
+                        sum += matrix1[i][k] * matrix1[k][j];
+                    }
+                    matrixR[i][j] = sum;
+                }
+            }
+
+            cout << "Matrix #1 " << endl;
+                displayMatrix(matrixList.at(0), row1, col1);
+            cout << "Matrix #1 " << endl;
+                displayMatrix(matrixList.at(1), row2, col2);
+            cout << "Matrix Result: " <<endl;
+                displayMatrix(matrixR, rowR, colR);
+
+            delete [] matrix1 ;
+            delete [] matrix2 ;
+            delete [] matrixR ;
         }
-
-
 
     }
 
@@ -309,3 +422,4 @@ using namespace std;
         delete [] matrixRev;
         delete [] matrix;
     }
+

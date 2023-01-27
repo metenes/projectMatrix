@@ -42,13 +42,15 @@ public :
 
     // Matrix Operations
     double** matrixSum();
-    double** matrixMult(); // TODO
+    void matrixMult(); // TODO
+    double** transposMatrix(double** matrix, int row, int col);
 
     // Serial Operations
+    void determinant();
     double determinantCal(double** matrix, int n);
     double coFactorCal(double** matrix, int n, int row, int col);
     double** adjMatrixCal(double** matrix);
-    double** LUSeprCal();
+    // double** LUSeprCal();
 
     void makeEchollon(double** matrix, double** matrixRev, int n);
     void matRev();

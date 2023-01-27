@@ -101,7 +101,7 @@ using namespace std;
         double** matrix = new double*[n];
 
         for(int i = 0; i < n; i++ ){
-            cout << "Enter the row#"<< i+1 << endl;
+            cout << "Enter the row# "<< i+1 << endl;
             matrix[i] = new double[n];
             for(int j = 0; j < n; j++){
                 double cur;
@@ -111,7 +111,7 @@ using namespace std;
         }
 
         double res = determinantCal(matrix,n);
-        cout << " Determinant of the matrix " << endl;
+        cout << " Determinant of the Matrix " << endl;
         displayMatrix(matrix, n);
         cout << "equals to " << res << endl;
         delete [] matrix;
@@ -162,8 +162,43 @@ using namespace std;
         return sum;
     }
 
-    double** Calix::adjMatrixCal(double** matrix){
+    void Calix::adjoint(){
+         int n;
+        cout << "- Adjoint Matrix is valid for matrix(s) have same number of row and column -" << endl;
+        cout << "Enter the number of rows and columns" << endl;
+        cin >> n;
 
+        // Result matrix
+        double** matrix = new double*[n];
+
+        for(int i = 0; i < n; i++ ){
+            cout << "Enter the row# "<< i+1 << endl;
+            matrix[i] = new double[n];
+            for(int j = 0; j < n; j++){
+                double cur;
+                cin >> cur;
+                matrix[i][j] = cur;
+            }
+        }
+        double** adjMatrix = adjMatrixCal(matrix, n);
+        double res = determinantCal(matrix,n);
+        cout << " Adjoint Matrix of the Matrix " << endl;
+        displayMatrix(matrix, n);
+        cout << "equals to the Matrix " << res << endl;
+        displayMatrix(adjMatrix, n);
+        delete [] matrix;
+        delete [] adjMatrix;
+    }
+
+    double** Calix::adjMatrixCal(double** matrix, int n){
+        double** adjMatrix = new double*[n];
+        for(int i = 0; i < n; i++){
+            adjMatrix[i] = new double[n];
+            for(int j = 0; j < n; j++){
+                adjMatrix[i][j] = coFactorCal(matrix, n, i, j);
+            }
+        }
+        return adjMatrix;
     }
 
     double** Calix::matrixSum(){
@@ -422,4 +457,3 @@ using namespace std;
         delete [] matrixRev;
         delete [] matrix;
     }
-

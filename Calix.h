@@ -45,8 +45,13 @@ public :
     void displayLinearMatrix(double** matrix, double* sol, int n, int m);
 
     // Matrix Operations
-    double** matrixSum();
-    void matrixMult(); // TODO
+        // Sum
+    void matrixSum();
+    double** matrixSumCal(double** matrix1, double** matrix2, int rowR, int colR );
+        // Mult
+    void matrixMult();
+    double** matrixMultCal(double** matrix1, double** matrix2, int rowR, int colR, int common );
+
     double** transposMatrix(double** matrix, int row, int col);
 
     // Serial Operations
@@ -69,4 +74,5 @@ public :
 };
 
 #endif // CALIX
+
 

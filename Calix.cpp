@@ -80,6 +80,42 @@ using namespace std;
         }
     }
 
+    // Linear Display Square Matrix
+    void Calix::displayLinearMatrix(double** matrix, double* sol, int n){
+        char var = 'a';
+        for(int i = 0; i < n; i++){
+            cout<<"| ";
+            for(int j = 0; j < n-1; j++){
+                cout << matrix[i][j] << " ";
+            }
+            if( n / 2 == i){
+                cout << matrix[i][n-1] << " | | " << var << " |=| " << sol[i] << " |"<<endl;
+            }
+            else{
+                cout << matrix[i][n-1] << " | | " << var << " | | " << sol[i] << " |"<<endl;
+            }
+            var++;
+        }
+    }
+
+    // Linear Display non-Square Matrix
+    void Calix::displayLinearMatrix(double** matrix, double* sol, int n, int m){
+        char var = 'a';
+        for(int i = 0; i < n; i++){
+            cout<<"| ";
+            for(int j = 0; j < m-1; j++){
+                cout << matrix[i][j] << " ";
+            }
+            if( n / 2 == i){
+                cout << matrix[i][m-1] << " | | " << var << " |=| " << sol[i] << " |"<<endl;
+            }
+            else{
+                cout << matrix[i][m-1] << " | | " << var << " | | " << sol[i] << " |"<<endl;
+            }
+            var++;
+        }
+    }
+
     double** Calix::transposMatrix(double** matrix, int row, int col){
         double** matrixR = new double*[col];
         for(int i = 0; i < col; i++){
@@ -90,6 +126,57 @@ using namespace std;
         }
         return matrixR;
     }
+
+    void Calix::cramer(){
+        int n;
+        cout << "- Cramer Method is as special method used to find "<<endl;
+        cout << " results for < A * x = B > form Matrix -" << endl;
+        cout << endl;
+        cout << "- Matrix determinant is valid for matrix(s) have same number of row and column -" << endl;
+        cout << "Enter the number of rows and columns" << endl;
+        cin >> n;
+
+        double** matrix = new double*[n];
+
+        for(int i = 0; i < n; i++ ){
+            cout << "Enter the row# "<< i+1 << endl;
+            matrix[i] = new double[n];
+            for(int j = 0; j < n; j++){
+                double cur;
+                cin >> cur;
+                matrix[i][j] = cur;
+            }
+        }
+
+        double deter = determinantCal(matrix,n);
+
+        double** curMatrix = new double*[n];
+        double* sol = new double[n];
+        for(int i = 0; i < n; i++){
+
+        }
+
+    }
+
+    double** Calix::cramerCalc(){
+
+    }
+
+    void Calix::ALU(){
+        int n;
+        cout << "- A = U * L Method is as special method used to find "<<endl;
+        cout << "Matrix A as the factor of Upper and Lower Triangle Matrix -" << endl;
+        cout << endl;
+        cout << "- A = U * L  is valid for matrix(s) have same number of row and column -" << endl;
+        cout << "Enter the number of rows and columns" << endl;
+        cin >> n;
+    }
+
+    double** Calix::ALUCal(double** matrix, int n){
+
+    }
+
+
 
     void Calix::determinant(){
         int n;
@@ -457,3 +544,4 @@ using namespace std;
         delete [] matrixRev;
         delete [] matrix;
     }
+

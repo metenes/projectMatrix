@@ -40,22 +40,33 @@ public :
     void displayMatrix(double** matrix, int n);
     void displayMatrix(double** matrix, int n, int m);
 
+    // Linear Display
+    void displayLinearMatrix(double** matrix, double* sol, int n);
+    void displayLinearMatrix(double** matrix, double* sol, int n, int m);
+
     // Matrix Operations
     double** matrixSum();
     void matrixMult(); // TODO
     double** transposMatrix(double** matrix, int row, int col);
 
     // Serial Operations
+        // Determinant
     void determinant();
     double determinantCal(double** matrix, int n);
     double coFactorCal(double** matrix, int n, int row, int col);
-
+        // Adjoint
     void adjoint();
     double** adjMatrixCal(double** matrix, int n);
-    // double** LUSeprCal();
+        // Cramer
+    void cramer();
+    double** cramerCalc();
+        // L*U = T
+    void ALU();
+    double** ALUCal(double** matrix, int n);
 
     void makeEchollon(double** matrix, double** matrixRev, int n);
     void matRev();
 };
 
 #endif // CALIX
+

@@ -288,30 +288,20 @@ using namespace std;
         return adjMatrix;
     }
 
-    double** Calix::matrixSum(){
-        int row, col;
+    void Calix::matrixSum(){
+        int rowR, colR;
         cout << "- Matrix sum is valid for matrix(s) have same number of row and column -" << endl;
         cout << "Enter the number of rows and columns" << endl;
-        cin >> row >> col;
-
-        // Result matrix
-        double** matrixR = new double*[row];
-
-        for(int i = 0; i < row; i++ ){
-            matrixR[i] = new double[col];
-            for(int j = 0; j < col; j++){
-                matrixR[i][j] = 0;
-            }
-        }
+        cin >> rowR >> colR;
 
         // Matrix list
         vector < double** > matrixList;
         for(int k = 0; k < 2; k++ ){
-            double** curMatrix = new double* [row];
+            double** curMatrix = new double* [rowR];
             cout << "Enter Matrix number " << k + 1 << endl;
-            for(int i = 0; i < row; i++ ){
-                curMatrix[i] = new double[col];
-                for(int j = 0; j < col; j++){
+            for(int i = 0; i < rowR; i++ ){
+                curMatrix[i] = new double[colR];
+                for(int j = 0; j < colR; j++){
                     double m;
                     cin >> m;
                     curMatrix[i][j] = m;
@@ -320,16 +310,35 @@ using namespace std;
             matrixList.push_back(curMatrix);
         }
 
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < col ; j++){
-                for(int k = 0; k < matrixList.size(); k++ ){
-                    matrixR[i][j] += matrixList.at(k)[i][j];
-                }
+        double** matrixR = matrixSumCal(matrixList.at(0), matrixList.at(1), rowR, colR);
+        cout << "Matrix #1 " << endl;
+            displayMatrix(matrixList.at(0), rowR, colR);
+        cout << "Matrix #2 " << endl;
+            displayMatrix(matrixList.at(1), rowR, colR);
+        cout << "Matrix Result: " <<endl;
+            displayMatrix(matrixR, rowR, colR);
+
+        delete [] matrixList.at(0) ;
+        delete [] matrixList.at(1) ;
+        delete matrixR;
+
+    }
+
+    double** Calix::matrixSumCal(double** matrix1, double** matrix2, int rowR, int colR){
+        // Result matrix
+        double** matrixR = new double*[rowR];
+
+        for(int i = 0; i < rowR; i++ ){
+            matrixR[i] = new double[colR];
+            for(int j = 0; j < colR; j++){
+                matrixR[i][j] = 0;
             }
         }
 
-        for(int k = 0; k < matrixList.size(); k++ ){
-            delete [] matrixList.at(k);
+        for(int i = 0; i < rowR; i++){
+            for(int j = 0; j < colR ; j++){
+                matrixR[i][j] += matrix1[i][j] + matrix2[i][j];
+            }
         }
 
         return matrixR;
@@ -337,7 +346,7 @@ using namespace std;
 
 
     void Calix::matrixMult(){
-        cout << "First Matrix's column number must be same with second Matrix's row number" << endl;
+         cout << "First Matrix's column number must be same with second Matrix's row number" << endl;
 
         // Result Matrix
         int rowR , colR;
@@ -354,7 +363,7 @@ using namespace std;
 
         // Check for Matrix constrains
         bool check = true;
-        int checkS;
+        int common = 0;
 
         for(int k = 0; k < 2; k++){
           cout << "Enter the number of rows and columns for Matrix #" << k+1 << endl;
@@ -364,13 +373,13 @@ using namespace std;
                 rowR = row;
                 row1 = row;
                 col1 = col;
-                checkS = col;
+                common = col;
             }
             else{
-                if(checkS != row){
+                if(common != row){
                     cout << "First Matrix's column number must be same with second Matrix's row number" << endl;
                     check = false;
-                    break;
+                    return;
                 }
                 else{
                     colR = col;
@@ -393,34 +402,37 @@ using namespace std;
         }
 
         if(check){
-         // Result matrix
 
-        int rowCount = 0;
-        int colCount = 0;
-            double** matrixR = new double*[rowR];
+            double** matrixR = matrixMultCal(matrixList.at(0), matrixList.at(1), rowR, colR, common);
+            cout << "Matrix #1 " << endl;
+                displayMatrix(matrixList.at(0), row1, col1);
+            cout << "Matrix #2 " << endl;
+                displayMatrix(matrixList.at(1), row2, col2);
+            cout << "Matrix Result: " <<endl;
+                displayMatrix(matrixR, rowR, colR);
+
+            delete [] matrixList.at(0) ;
+            delete [] matrixList.at(1) ;
+            delete matrixR;
+        }
+    }
+
+    double** Calix::matrixMultCal(double** matrix1, double** matrix2, int rowR, int colR, int common ){
+
+        // Result matrix
+        double** matrixR = new double*[rowR];
             for(int i = 0; i < rowR; i++){
                 matrixR[i] = new double[colR];
-                for(int j = 0; j < colR ;j++){
+                for(int j = 0; j < colR ; j++){
                     double sum = 0;
-                    for(int k = 0; k < checkS; k++){
-                        sum += matrix1[i][k] * matrix1[k][j];
+                    for(int k = 0; k < common; k++){
+                        sum += ( (matrix1[i][k]) * (matrix2[k][j]) );
                     }
                     matrixR[i][j] = sum;
                 }
             }
 
-            cout << "Matrix #1 " << endl;
-                displayMatrix(matrixList.at(0), row1, col1);
-            cout << "Matrix #1 " << endl;
-                displayMatrix(matrixList.at(1), row2, col2);
-            cout << "Matrix Result: " <<endl;
-                displayMatrix(matrixR, rowR, colR);
-
-            delete [] matrix1 ;
-            delete [] matrix2 ;
-            delete [] matrixR ;
-        }
-
+            return matrixR ;
     }
 
     void Calix::makeEchollon(double** matrix, double** matrixRev, int n){
@@ -544,4 +556,3 @@ using namespace std;
         delete [] matrixRev;
         delete [] matrix;
     }
-
